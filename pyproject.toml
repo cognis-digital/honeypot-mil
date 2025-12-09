@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cognis-honeypot-mil"
+version = "0.1.0"
+description = "Honeypot event enrichment + STIX/TAXII + CISA IOC export"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+authors = [{name="Cognis Digital", email="suite@cognis.digital"}]
+readme = "README.md"
+keywords = ["military","ic","dod","cognis-digital","honeypot-mil"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov"]
+
+[project.scripts]
+honeypot-mil = "honeypot_mil.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["honeypot_mil", "cognis_mil"]
