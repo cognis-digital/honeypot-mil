@@ -68,7 +68,7 @@ These are emitted in JSON, SARIF, and the OSCAL skeleton.
 ```yaml
 - name: honeypot-mil scan
   run: |
-    pip install cognis-honeypot-mil
+    pip install "git+https://github.com/cognis-digital/honeypot-mil.git"
     honeypot-mil . --format=oscal --out=assessment-results.json --fail-on=high
 - name: Upload to eMASS/Xacta
   run: cognis-rmf-package import assessment-results.json
@@ -80,3 +80,42 @@ These are emitted in JSON, SARIF, and the OSCAL skeleton.
 Apache-2.0 unless stated otherwise.
 
 See [the master index](../../MASTER-INDEX.md).
+
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-5%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-12):
+
+```text
+tests        : 5 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : honeypot-mil 0.1.0
+package      : honeypot_mil
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+usage: honeypot-mil [-h] [--format {console,json,markdown,sarif,oscal}]
+                    [--out OUT] [--fail-on {very_high,high,moderate,low,none}]
+                    [--classification CLASSIFICATION] [-v]
+                    [target]
+
+honeypot-mil — Cognis Digital · Military/IC ecosystem
+
+positional arguments:
+  target                Path/target
+
+options:
+  -h, --help            show this help message and exit
+  --format {console,json,markdown,sarif,oscal}
+  --out OUT             Write output to file
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m honeypot_mil --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
