@@ -4,7 +4,7 @@ Pairs with T-Pot / Cowrie / Honeyd / Dionaea. We don't ship the honeypot
 itself — we ship the analysis layer.
 """
 from __future__ import annotations
-import json, csv, ipaddress, hashlib, time
+import json, csv, ipaddress, time
 from pathlib import Path
 from collections import defaultdict
 from cognis_mil import ScanResult, Finding, Severity
