@@ -5,6 +5,41 @@
 
 > Ingest honeypot events (T-Pot/Cowrie/Honeyd), enrich with ATT&CK + tool fingerprints, export to STIX/CISA AIS.
 
+## Usage — step by step
+
+`honeypot-mil` enriches honeypot event logs (attribution + IOC extraction) and exports indicators in a TAXII-friendly form.
+
+1. **Install:**
+
+   ```bash
+   pip install cognis-honeypot-mil      # or: pip install -e .
+   honeypot-mil --version
+   ```
+
+2. **Run a scan** over honeypot events — supply a directory containing JSONL with at least `ts, src_ip, dst_port, protocol, payload` (`target` defaults to `.`):
+
+   ```bash
+   honeypot-mil ./events --format console
+   ```
+
+3. **Emit JSON** and save it (formats: `console`, `json`, `markdown`, `sarif`, `oscal`):
+
+   ```bash
+   honeypot-mil ./events --format json --out honeypot-findings.json
+   ```
+
+4. **Read the result** — findings include bogon sources (`HP-BOGON-*`), port-scans (`HP-PORTSCAN-*`), and known-tool fingerprints (`HP-TOOL-*`):
+
+   ```bash
+   jq '.findings[] | {id, severity, message}' honeypot-findings.json
+   ```
+
+5. **Gate it in CI** — alert (non-zero exit) when high-severity attacker activity is enriched:
+
+   ```bash
+   honeypot-mil ./events --format sarif --out honeypot.sarif --fail-on high
+   ```
+
 ## Upstream
 
 Forks / wraps **https://github.com/telekom-security/tpotce**. See [`UPSTREAM.md`](./UPSTREAM.md) for the
