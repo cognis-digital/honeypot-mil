@@ -5,6 +5,12 @@
 
 > Ingest honeypot events (T-Pot/Cowrie/Honeyd), enrich with ATT&CK + tool fingerprints, export to STIX/CISA AIS.
 
+<!-- cognis:layman:start -->
+## What is this?
+
+honeypot-mil reads activity logs from network honeypots -- decoy servers set up to attract and record malicious traffic -- and tells you who is probing your network and how. It automatically flags suspicious IP addresses, identifies the hacking tools attackers are using (such as Nmap or Masscan), and marks traffic coming from spoofed or internal addresses that should never appear on public internet. Security teams and government network defenders can use it to export those findings in standard formats (STIX, CISA AIS) so the threat intelligence can be shared with partner agencies or fed into automated blocking systems.
+<!-- cognis:layman:end -->
+
 ## Upstream
 
 Forks / wraps **https://github.com/telekom-security/tpotce**. See [`UPSTREAM.md`](./UPSTREAM.md) for the
@@ -16,6 +22,52 @@ licensing posture, supported commits, and how to upgrade.
 - Common-tool fingerprint library
 - Bogon source-IP detector
 - STIX 2.1 + CISA AIS exporters
+
+<!-- cognis:domains:start -->
+## Domains
+
+**Primary domain:** Cyber & Security  ·  **JTF MERIDIAN division:** NULLBYTE · SPECTER
+
+**Topics:** `cognis` `security` `infosec` `cybersecurity` `blue-team` `threat-intel`
+
+Part of the **Cognis Neural Suite** — 300+ source-available tools organized across 12 domains under the JTF MERIDIAN command structure. See the [suite on GitHub](https://github.com/cognis-digital) and [jtf-meridian](https://github.com/cognis-digital/jtf-meridian) for how the pieces fit together.
+<!-- cognis:domains:end -->
+
+<!-- cognis:install:start -->
+## Install
+
+`honeypot-mil` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/honeypot-mil/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/honeypot-mil/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/honeypot-mil.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/honeypot-mil.git"  # uv
+pip install "git+https://github.com/cognis-digital/honeypot-mil.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/honeypot-mil.git
+cd honeypot-mil && pip install .
+```
+
+Then run:
+```sh
+honeypot-mil --help
+```
+<!-- cognis:install:end -->
 
 ## Install
 
@@ -68,7 +120,7 @@ These are emitted in JSON, SARIF, and the OSCAL skeleton.
 ```yaml
 - name: honeypot-mil scan
   run: |
-    pip install cognis-honeypot-mil
+    pip install "git+https://github.com/cognis-digital/honeypot-mil.git"
     honeypot-mil . --format=oscal --out=assessment-results.json --fail-on=high
 - name: Upload to eMASS/Xacta
   run: cognis-rmf-package import assessment-results.json
