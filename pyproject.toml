@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cognis-honeypot-mil"
-version = "0.1.0"
+version = "0.1.1"
 description = "Honeypot event enrichment + STIX/TAXII + CISA IOC export"
 license = { text = "LicenseRef-COCL-1.0" }
 requires-python = ">=3.10"
@@ -14,9 +14,11 @@ keywords = ["military","ic","dod","cognis-digital","honeypot-mil"]
 dependencies = []
 
 [project.optional-dependencies]
+connect = ["cognis-connect @ git+https://github.com/cognis-digital/cognis-connect.git"]
 dev = ["pytest>=8.0", "pytest-cov"]
 
 [project.scripts]
+"honeypot-mil-emit" = "honeypot_mil.connect:emit_main"
 honeypot-mil = "honeypot_mil.cli:main"
 
 [tool.hatch.build.targets.wheel]
