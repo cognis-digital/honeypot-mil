@@ -23,3 +23,6 @@ honeypot-mil = "honeypot_mil.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["honeypot_mil", "cognis_mil"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
