@@ -30,17 +30,31 @@ class AuditLog:
         return entry
 
     def verify(self) -> tuple[bool, str]:
-        if not self.path.exists(): return True, "Empty log"
+        if not self.path.exists():
+            return True, "Empty log"
+        lines = [ln for ln in self.path.read_text().splitlines() if ln.strip()]
+        if not lines:
+            return True, "Empty log"
         prev = "GENESIS"
-        for i, line in enumerate(self.path.read_text().splitlines(), 1):
+        count = 0
+        for i, line in enumerate(lines, 1):
             try:
                 e = json.loads(line)
-            except: return False, f"Line {i}: not valid JSON"
-            recomputed_body = json.dumps({k:e[k] for k in ("ts","prev","event")}, sort_keys=True, default=str)
+            except json.JSONDecodeError:
+                return False, f"Line {i}: not valid JSON"
+            if not isinstance(e, dict):
+                return False, f"Line {i}: expected a JSON object"
+            missing = [k for k in ("ts", "prev", "event", "hash") if k not in e]
+            if missing:
+                return False, f"Line {i}: missing fields {missing}"
+            recomputed_body = json.dumps(
+                {k: e[k] for k in ("ts", "prev", "event")}, sort_keys=True, default=str
+            )
             recomputed = hashlib.sha256((recomputed_body + prev).encode()).hexdigest()
             if recomputed != e["hash"]:
                 return False, f"Hash mismatch at line {i}"
             if e["prev"] != prev:
                 return False, f"Prev mismatch at line {i}"
             prev = e["hash"]
-        return True, f"Chain OK ({i} entries)"
+            count += 1
+        return True, f"Chain OK ({count} entries)"
