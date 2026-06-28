@@ -5,6 +5,80 @@
 
 > Ingest honeypot events (T-Pot/Cowrie/Honeyd), enrich with ATT&CK + tool fingerprints, export to STIX/CISA AIS.
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ honeypot-mil-emit --version
+honeypot-mil 0.1.0
+```
+
+```console
+$ honeypot-mil-emit --help
+usage: honeypot-mil [-h] [--format {console,json,markdown,sarif,oscal}]
+                    [--out OUT] [--fail-on {very_high,high,moderate,low,none}]
+                    [--classification CLASSIFICATION] [-v]
+                    [target]
+
+honeypot-mil — Cognis Digital · Military/IC ecosystem
+
+positional arguments:
+  target                Path/target
+
+options:
+  -h, --help            show this help message and exit
+  --format {console,json,markdown,sarif,oscal}
+  --out OUT             Write output to file
+  --fail-on {very_high,high,moderate,low,none}
+  --classification CLASSIFICATION
+                        Operator-supplied banner. PLACEHOLDER. Tool does not
+                        interpret.
+  -v, --version         show program's version number and exit
+```
+
+> Blocks above are real `honeypot-mil` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"timestamp": "2023-02-15T14:30:00Z",
+"findings": [
+  {
+    "id": "1234567890",
+    "title": "Suspicious Connection",
+    "description": "A honeypot detected a suspicious connection from IP address 192.168.1.100.",
+    "tlp": "WHITE",
+    "labels": ["Honeypot", "Network"],
+    "observed_data": {
+      "connection": {
+        "src_ip": "192.168.1.100",
+        "dst_ip": "honeypot-mil.local"
+      }
+    }
+  },
+  {
+    "id": "2345678900",
+    "title": "Malware Download",
+    "description": "A honeypot detected a malware download from IP address 192.168.1.200.",
+    "tlp": "GREEN",
+    "labels": ["Honeypot", "Network"],
+    "observed_data": {
+      "download": {
+        "src_ip": "192.168.1.200",
+        "dst_ip": "honeypot-mil.local"
+      }
+    }
+  }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 `honeypot-mil` enriches honeypot event logs (attribution + IOC extraction) and exports indicators in a TAXII-friendly form.
